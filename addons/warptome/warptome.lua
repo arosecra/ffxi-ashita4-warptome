@@ -360,15 +360,20 @@ local function find_warp(test_mode)
 end
 
 local function warpto(result, name, test_mode) 
-    local qCommand = '/ms sendto ' .. name .. ' /uw ' .. result['Type'] .. result['Alias'];
-    AshitaCore:GetChatManager():QueueCommand(1, qCommand);
+    local qCommand = '/ms sendto ' .. name .. ' /uw ' .. result['Type'] .. ' \"' .. result['Alias'] .. '\"';
+    
+	if test_mode then
+		print(qCommand)
+	else
+		AshitaCore:GetChatManager():QueueCommand(1, qCommand);
+	end
 end
 
 ashita.events.register('command', 'command_callback1', function (e)
     if (e.command == '/warptometest') then
         local result = find_warp(true)
 		if result ~= nil then
-            warpto(result, '[user]', true)
+			warpto(result, 'Test', true)
 		end
         e.blocked = true;
     elseif (e.command == '/warptomeparty') then
