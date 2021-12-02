@@ -319,7 +319,7 @@ end
 
 local function find_warp(test_mode)
     local party     = AshitaCore:GetMemoryManager():GetParty();
-	local zone = AshitaCore:GetResourceManager():GetString('zones', party:GetMemberZone(0))
+	local zone = AshitaCore:GetResourceManager():GetString('zones.names', party:GetMemberZone(0))
 
 	local result = homepoint_warp(zone, test_mode)
 	if result == nil then
