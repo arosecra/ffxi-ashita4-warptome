@@ -129,6 +129,9 @@ local undulating_confluence_aliases = {
 	{alias="Misareaux Coast", x=-48.97701, y=-23.30917}, 
 	{alias="Escha Ru'Aun", x=0.00899, y=-34.10586}
 }
+local cavernous_maw_aliases = {
+	
+}
 local unity_zones = {
 	{alias="East Ronfaure"}, 
 	{alias="South Gustaberg"}, 
@@ -255,6 +258,25 @@ local function lookup_by_location(zone, entity_name, aliases, type_text, test_mo
 	return result
 end
 
+local function lookup_by_entity_name(entity_name, type_text, test_mode) 
+	local result = nil;
+	for x = 0, 2303 do
+		local e = GetEntity(x);
+		if (e ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
+			if string.find(e.Name, entity_name) then
+				result = {}
+				result['Alias'] = ''
+				result['Type'] = type_text
+				if result == nil and test_mode then
+					print('\30\110'..type_text..' not found in aliases: '..e.Name);
+				end
+			end;
+		end
+	end
+
+	return result
+end
+
 local function waypoint_warp(zone, test_mode)
 	return lookup_by_location(zone, 'Waypoint', waypoint_aliases, 'wp', test_mode)
 end
@@ -273,6 +295,10 @@ local function escha_zone_warp(zone, test_mode)
 		result = lookup_by_location(zone, 'Undulating Confluence', undulating_confluence_aliases, 'ee', test_mode)
 	end
 	return result
+end
+
+local function abyssea_zone_warp(zone, test_mode)
+	return lookup_by_location(zone, 'Cavernous Maw', cavernous_maw_aliases, 'ae', test_mode)
 end
 
 local function escha_di_warp(zone, test_mode)
@@ -317,6 +343,10 @@ local function unity_warp(zone, test_mode)
 	return result
 end
 
+local function scalable_area_warp(zone, test_mode)
+	return lookup_by_entity_name('Scalable Area', 'sa', test_mode)
+end
+
 local function find_warp(test_mode)
     local party     = AshitaCore:GetMemoryManager():GetParty();
 	local zone = AshitaCore:GetResourceManager():GetString('zones.names', party:GetMemberZone(0))
@@ -347,11 +377,23 @@ local function find_warp(test_mode)
 		end
 	end
 	if result == nil then
+		result = scalable_area_warp(zone, test_mode)
+		if result ~= nil then
+			result['Alias'] = ''
+		end
+	end
+	if result == nil then
 		result = escha_di_warp(zone, test_mode)
 		if result ~= nil then
 			result['Alias'] = ''
 		end
 	end
+	-- when in abyssea and not near a conflux, warp others to me
+	if result == nil then
+		result = abyssea_zone_warp(zone, test_mode)
+	end
+	
+	
 	if result == nil then
 		result = unity_warp(zone, test_mode)
 	end
@@ -398,3 +440,11 @@ ashita.events.register('command', 'command_callback1', function (e)
     end
 
 end);
+
+-- todo: display a panel with options when a option is selected and
+--   when near horst
+--   when near the reisenjima warp
+--   when near a conflux
+--   when near a scalable area
+--   when near the up / down river thing
+--   
