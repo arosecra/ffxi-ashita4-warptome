@@ -191,7 +191,7 @@ local function homepoint_warp(zone, test_mode)
 	local result = nil;
 	for x = 0, 2303 do
 		local e = GetEntity(x);
-		if (e ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
+		if (e ~= nil and e.Name ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
 
 			if string.find(e.Name, 'Home Point') then
 				result = {};
@@ -219,7 +219,7 @@ local function survival_guide_warp(zone, test_mode)
 	local result = nil;
 	for x = 0, 2303 do
 		local e = GetEntity(x);
-		if (e ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
+		if (e ~= nil and e.Name ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
 			if string.find(e.Name, 'Survival Guide') then
 				result = {};
 				result['Alias'] = zone
@@ -235,7 +235,7 @@ local function lookup_by_location(zone, entity_name, aliases, type_text, test_mo
 	local result = nil;
 	for x = 0, 2303 do
 		local e = GetEntity(x);
-		if (e ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
+		if (e ~= nil and e.Name ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
 			if string.find(e.Name, entity_name) then
 				local waypointx = math.floor(e.Movement.LocalPosition.X * 100000)/100000
 				local waypointy = math.floor(e.Movement.LocalPosition.Y * 100000)/100000
@@ -262,7 +262,7 @@ local function lookup_by_entity_name(entity_name, type_text, test_mode)
 	local result = nil;
 	for x = 0, 2303 do
 		local e = GetEntity(x);
-		if (e ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
+		if (e ~= nil and e.Name ~= nil and e.WarpPointer ~= 0 and math.sqrt(e.Distance) < 6 and result == nil) then
 			if string.find(e.Name, entity_name) then
 				result = {}
 				result['Alias'] = ''
