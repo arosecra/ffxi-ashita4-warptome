@@ -239,6 +239,11 @@ local function lookup_by_location(zone, entity_name, aliases, type_text, test_mo
 			if string.find(e.Name, entity_name) then
 				local waypointx = math.floor(e.Movement.LocalPosition.X * 100000)/100000
 				local waypointy = math.floor(e.Movement.LocalPosition.Y * 100000)/100000
+				local waypointz = math.floor(e.Movement.LocalPosition.Z * 100000)/100000
+				print(e.Name)
+				print(waypointx)
+				print(waypointy)
+				print(waypointz)
 				for i,j in ipairs(aliases) do
 					if(waypointx == j.x) then
 						result = {};
